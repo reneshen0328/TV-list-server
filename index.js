@@ -2,8 +2,7 @@ const path = require("path");
 const fs = require("fs").promises;
 
 const { db } = require("./db");
-const { Show } = require("./Models/Show");
-const { User } = require("./Models/User");
+const { Show,User } = require("./Models/index");
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -26,9 +25,7 @@ const seed = async () => {
   console.log(`All of the shows and users model have been created!`);
 };
 
-seed();
+// seed();
 
-Show.belongsTo(User);
-User.hasMany(Show);
 
-module.exports = { db, Show, User, seed };
+module.exports = { seed };
