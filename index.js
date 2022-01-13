@@ -1,32 +1,34 @@
 const path = require("path");
 const fs = require("fs").promises;
 
-const {db, DataTypes} = require("./db");
+const { db } = require("./db");
 const { Show } = require("./Models/Show");
 const { User } = require("./Models/User");
 
 const seed = async () => {
-    await db.sync({ force : true });
+  await db.sync({ force: true });
 
-    const seedPathShow = path.join(__dirname,"shows.json");
-    const seedPathUser = path.join(__dirname,"users.json")
+  const seedPathShow = path.join(__dirname, "./JSON/shows.json");
+  const seedPathUser = path.join(__dirname, "./JSON/users.json");
 
-    const bufferShow = await fs.readFile(seedPathShow);
-    const { dataShows } = JSON.parse(bufferShow);
+  const bufferShow = await fs.readFile(seedPathShow);
+  const { dataShows } = JSON.parse(bufferShow);
 
-    const bufferUser = await fs.readFile(seedPathUser);
-    const { dataUsers } = JSON.parse(bufferUser);
+  const bufferUser = await fs.readFile(seedPathUser);
+  const { dataUsers } = JSON.parse(bufferUser);
 
-    const showPromises = dataShows.map(show => Show.create(show));
-    const userPromises = dataUsers.map(user => User.create(user));
+  const showPromises = dataShows.map((show) => Show.create(show));
+  const userPromises = dataUsers.map((user) => User.create(user));
 
-    await showPromises.all();
-    await userPromises.all();
+  await Promise.all(showPromises);
+  await Promise.all(userPromises);
 
-    console.log(`All of the shows and users model have been created!`)
-}
+  console.log(`All of the shows and users model have been created!`);
+};
 
 seed();
 
-Show.hasOne(User);
+Show.belongsTo(User);
 User.hasMany(Show);
+
+module.exports = { db, Show, User, seed };
