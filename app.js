@@ -107,10 +107,6 @@ app.get("/shows/genres/:genre", async (req, res) => {
   const shows = await Show.findAll({
     where: { genre: { [Op.like]: `%${genres}%` } },
   });
-  // const arrGenre = genres.map(g => g.split(","))
-  // const includeGenre = await Show.findAll(
-  //   { where: { genre: {[Op.contains] : [req.params.genre]} } }
-  //   )
   res.json({ shows });
 });
 
