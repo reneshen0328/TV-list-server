@@ -3,8 +3,6 @@ const app = express();
 
 const { seed } = require("./index");
 const { Show, User, association } = require("./Models/index");
-// const { db } = require("./index")
-// const { genres } = require("./Models/Show");
 const PORT = 8080;
 const { Op } = require("sequelize");
 
