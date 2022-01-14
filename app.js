@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 
 const { seed } = require("./index");
-const { Show, User } = require("./Models/index");
-const { genres } = require("./Models/Show");
+const { Show, User, association } = require("./Models/index");
+// const { db } = require("./index")
+// const { genres } = require("./Models/Show");
 const PORT = 8080;
+const { Op } = require("sequelize");
 
 // Body parser
 app.use(express.json());
@@ -94,20 +96,26 @@ app.put("/shows/:id/rating", async (req, res) => {
 
 // A route that will ‘remove’ a show if the series gets cancelled.
 app.delete("/shows", async (req, res) => {
-  await Show.destroy(
-    { where: { status : "canceled" } }
-  );
+  await Show.destroy({ where: { status: "canceled" } });
   res.send(`Show is deleted because it's cancelled`);
 });
 
-// READ ENUM DOCUMENT!!!
 // A route that will get shows of a specific genre.
-app.get("/shows/genre", async (req,res) => {
-    const includeGenre = await Show.findAll({ where: { genre: req.params.genre } })
-    res.json({includeGenre})
-})
+app.get("/shows/genres/:genre", async (req, res) => {
+  const genres = req.params.genre;
+  console.log(genres);
+  const shows = await Show.findAll({
+    where: { genre: { [Op.like]: `%${genres}%` } },
+  });
+  // const arrGenre = genres.map(g => g.split(","))
+  // const includeGenre = await Show.findAll(
+  //   { where: { genre: {[Op.contains] : [req.params.genre]} } }
+  //   )
+  res.json({ shows });
+});
 
 app.listen(PORT, async () => {
   await seed();
+  await association();
   console.log(`The server is listening to PORT: ${PORT}`);
 });
