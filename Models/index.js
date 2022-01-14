@@ -20,7 +20,7 @@ async function association() {
 
   // Sequelize method to test if addShow is succeed
   const userShow = await testUser.getShows();
-  console.log(userShow)
+  console.log(userShow);
 }
 
 module.exports = { Show, User, association };
