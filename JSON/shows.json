@@ -50,13 +50,13 @@
         },
         {
             "title": "South park",
-            "genre": "satire, dark comedy, surreal humor",
+            "genre": "satire, comedy, surreal humor",
             "rating": 4.7,
             "status": "renewed"
         },
         {
             "title": "I Know What You Did Last Summer",
-            "genre": "horror, thriller, teen",
+            "genre": "horror, mystery, teen",
             "rating": 4.1,
             "status": "canceled"
         }
